@@ -6,9 +6,9 @@ import 'package:theseus/ruby_port.dart' as ruby;
 part 'recursive_backtracker.dart';
 part 'base.dart';
 
-Base resolveAlgorithms(Type algorithmType,Maze maze,MazeOptions options) {
+Base resolveAlgorithms(Type? algorithmType, Maze maze, MazeOptions options) {
   if (algorithmType == RecursiveBacktracker) {
-    return new RecursiveBacktracker(maze, options);
+    return RecursiveBacktracker(maze, options);
   }
-  throw new UnimplementedError("Unknown $algorithmType");
+  throw UnimplementedError("Unknown $algorithmType");
 }

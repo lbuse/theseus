@@ -26,7 +26,7 @@ void main(){
 //    var path = solve.to_path(new PathOptions()..color=pngSetting.solution_color);
 //    pngSetting.paths = [path];
     orthogonalMaze.to<formatters.PNGOrthogonal,formatters.PNGFormatterOptions>(FormatType.png,pngSetting);
-    Image image = icanvas.image;
+    Image image = icanvas.image!;
     List<int> png = new PngEncoder().encodeImage(image);
     new Io.File('output/maze.png').writeAsBytesSync(png);
 }
@@ -39,7 +39,7 @@ void printMaze(Maze maze) {
 }
 
 class ImageCanvas extends formatters.PNGCanvas{
-    Image image;
+    Image? image;
     @override
     int width = 0;
 
@@ -49,7 +49,7 @@ class ImageCanvas extends formatters.PNGCanvas{
 
 
     @override
-    void fillRect(num x0, num y0, num x1, num y1, num color) {
+    void fillRect(num x0, num y0, num x1, num y1, num? color) {
                     for (int x = math.min(x0, x1).ceil(); x <= math.max(x0, x1).floor();x++) {
         // [x0, x1].min.ceil.upto([x0, x1].max.floor) do |x|{
                 for (int y = math.min(y0, y1).ceil(); y <= math.max(y0, y1).floor(); y++) {
@@ -74,23 +74,23 @@ class ImageCanvas extends formatters.PNGCanvas{
     }
 
     @override
-    void point(num x, num y, num color) {
-        image.setPixel(x.toInt(),y.toInt(), color.toInt());
+    void point(num x, num y, num? color) {
+        image!.setPixel(x.toInt(),y.toInt(), color!.toInt());
     }
 
     @override
     void setBackground(num value) {
         background = value;
         if (image!=null){
-            image.fill(background.toInt());
+            image!.fill(background.toInt());
         }
     }
 
     @override
-    void setSize(num w, num h) {
-        this.width = w.toInt();
-        this.height = h.toInt();
+    void setSize(num? w, num? h) {
+        this.width = w!.toInt();
+        this.height = h!.toInt();
         image = new Image(width, height);
-        image.fill(background.toInt());
+        image!.fill(background.toInt());
     }
 }

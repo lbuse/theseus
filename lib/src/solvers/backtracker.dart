@@ -1,42 +1,48 @@
 part of theseus.solvers;
+
 //require 'theseus/solvers/base'
 //
 //module Theseus
 //  module Solvers
-    //# An implementation of a recursive backtracker for solving a maze. Although it will
-    //# work (eventually) for multiply-connected mazes, it will almost certainly not
-    //# return an optimal solution in that case. Thus, this solver is best suited only
-    //# for "perfect" mazes (those with no loops).
-    //#
-    //# For mazes that contain loops, see the Theseus::Solvers::Astar class.
-class BacktrackerStackItem{
-  final Position position;//[0]
-  final List<int> directions;//[1]
+//# An implementation of a recursive backtracker for solving a maze. Although it will
+//# work (eventually) for multiply-connected mazes, it will almost certainly not
+//# return an optimal solution in that case. Thus, this solver is best suited only
+//# for "perfect" mazes (those with no loops).
+//#
+//# For mazes that contain loops, see the Theseus::Solvers::Astar class.
+class BacktrackerStackItem {
+  final Position? position; //[0]
+  final List<int>? directions; //[1]
   BacktrackerStackItem(this.position, this.directions);
 }
 
-    class Backtracker extends Base{
-      List<List<int>> _visits;
-      List<BacktrackerStackItem> _stack;
-      Backtracker(Maze maze):super(maze,maze.start(),maze.finish()){ //#:nodoc:
-        _visits = new List.generate(_maze.height,(_)=>new List.generate(_maze.width,(_)=> 0));
-        _stack = [];
-      }
+class Backtracker extends Base {
+  List<List<int>>? _visits;
+  late List<BacktrackerStackItem> _stack;
+  Backtracker(Maze maze) : super(maze, maze.start(), maze.finish()) {
+    //#:nodoc:
+    _visits = List.generate(
+        _maze!.height!, (_) => List.generate(_maze!.width!, (_) => 0));
+    _stack = [];
+  }
 
-     final Map<bool,int> VISIT_MASK = { false : 1, true : 2 };
+  final Map<bool, int> VISIT_MASK = {false: 1, true: 2};
 
-      Iterable<Position> current_solution(){//#:nodoc:
-        return _stack.map((item)=>item.position); //_stack[1..-1].map { |item| item[0] };
-      }
+  Iterable<Position?> current_solution() {
+    //#:nodoc:
+    return _stack
+        .map((item) => item.position); //_stack[1..-1].map { |item| item[0] };
+  }
 
-      final BacktrackerStackItem FAIL_POSITION = new BacktrackerStackItem(null,null);
-      
-     Position step(){//#:nodoc:
-        /*if (_stack.length ==1 && _stack[0] == FAIL_POSITION/*[:fail]*/){
+  final BacktrackerStackItem FAIL_POSITION = BacktrackerStackItem(null, null);
+
+  Position step() {
+    //#:nodoc:
+    /*if (_stack.length ==1 && _stack[0] == FAIL_POSITION/*[:fail]*/){
           return null;//false;
         }else if (_stack.isEmpty){
           _stack.add(FAIL_POSITION);
-          _stack.add(new BacktrackerStackItem(_a, _maze.potential_exits_at(_a.x, _a.y).dup()));
+          _stack.add( BacktrackerStackItem(_a, _maze.potential_exits_at(_a.x, _a.y).dup()));
           return _a;
         }else if (_stack.last.position == _b){
           _solution = _stack.map((item)=>item.position);//_stack[1..-1].map { |pt, tries| pt };
@@ -82,11 +88,11 @@ class BacktrackerStackItem{
                 directions = _maze.potential_exits_at(nxny.x, nxny.y) - [_maze.opposite(dir)];
               }
 
-              _stack.add(new BacktrackerStackItem(p, directions));
+              _stack.add( BacktrackerStackItem(p, directions));
               return p.dup();
             }
           }
         }*/
-        throw UnimplementedError('TODO');
-      }
-    }
+    throw UnimplementedError('TODO');
+  }
+}
